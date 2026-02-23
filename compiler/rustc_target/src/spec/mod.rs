@@ -1668,6 +1668,8 @@ supported_targets! {
     ("x86_64-unknown-hermit", x86_64_unknown_hermit),
     ("x86_64-unknown-motor", x86_64_unknown_motor),
 
+    ("x86_64-unknown-saltyos", x86_64_unknown_saltyos),
+
     ("x86_64-unikraft-linux-musl", x86_64_unikraft_linux_musl),
 
     ("armv7-unknown-trusty", armv7_unknown_trusty),
@@ -1993,6 +1995,7 @@ crate::target_spec_enum! {
         Qurt = "qurt",
         Redox = "redox",
         Rtems = "rtems",
+        SaltyOs = "saltyos",
         Solaris = "solaris",
         SolidAsp3 = "solid_asp3",
         TeeOs = "teeos",
