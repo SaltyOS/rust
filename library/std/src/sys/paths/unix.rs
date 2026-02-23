@@ -357,6 +357,11 @@ pub fn current_exe() -> io::Result<PathBuf> {
     Err(io::const_error!(io::ErrorKind::Unsupported, "not yet implemented!"))
 }
 
+#[cfg(target_os = "saltyos")]
+pub fn current_exe() -> io::Result<PathBuf> {
+    Err(io::const_error!(io::ErrorKind::Unsupported, "not yet implemented!"))
+}
+
 #[cfg(target_os = "vxworks")]
 pub fn current_exe() -> io::Result<PathBuf> {
     #[cfg(test)]
@@ -424,6 +429,7 @@ pub fn home_dir() -> Option<PathBuf> {
         target_os = "android",
         target_os = "emscripten",
         target_os = "redox",
+        target_os = "saltyos",
         target_os = "vxworks",
         target_os = "espidf",
         target_os = "horizon",
@@ -438,6 +444,7 @@ pub fn home_dir() -> Option<PathBuf> {
         target_os = "android",
         target_os = "emscripten",
         target_os = "redox",
+        target_os = "saltyos",
         target_os = "vxworks",
         target_os = "espidf",
         target_os = "horizon",

@@ -83,6 +83,7 @@ pub unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
             target_os = "fuchsia",
             target_os = "vxworks",
             target_os = "redox",
+            target_os = "saltyos",
             target_os = "l4re",
             target_os = "horizon",
             target_os = "vita",

@@ -295,8 +295,8 @@ impl Command {
         #[cfg(not(target_os = "l4re"))]
         {
             if let Some(_g) = self.get_groups() {
-                //FIXME: Redox kernel does not support setgroups yet
-                #[cfg(not(target_os = "redox"))]
+                //FIXME: Redox/SaltyOS kernel does not support setgroups yet
+                #[cfg(not(any(target_os = "redox", target_os = "saltyos")))]
                 cvt(libc::setgroups(_g.len().try_into().unwrap(), _g.as_ptr()))?;
             }
             if let Some(u) = self.get_gid() {
@@ -309,8 +309,8 @@ impl Command {
                 // set of groups. If we don't call this, then even though our
                 // uid has dropped, we may still have groups that enable us to
                 // do super-user things.
-                //FIXME: Redox kernel does not support setgroups yet
-                #[cfg(not(target_os = "redox"))]
+                //FIXME: Redox/SaltyOS kernel does not support setgroups yet
+                #[cfg(not(any(target_os = "redox", target_os = "saltyos")))]
                 if self.get_groups().is_none() {
                     let res = cvt(libc::setgroups(0, crate::ptr::null()));
                     if let Err(e) = res {

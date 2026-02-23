@@ -44,7 +44,7 @@ cfg_select! {
         mod hermit;
         pub use hermit::fill_bytes;
     }
-    any(target_os = "horizon", target_os = "cygwin") => {
+    any(target_os = "horizon", target_os = "cygwin", target_os = "saltyos") => {
         // FIXME(horizon): add arc4random_buf to shim-3ds
         mod getrandom;
         pub use getrandom::fill_bytes;

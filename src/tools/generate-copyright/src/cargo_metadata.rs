@@ -91,6 +91,11 @@ pub fn get_metadata(
                 // it's an in-tree dependency and reuse covers it
                 continue;
             }
+            if package.source.is_none() && !package_manifest_path.starts_with(cargo_home_path) {
+                // it's a path dependency (e.g. [patch.crates-io] pointing outside
+                // the source tree) — treat as in-tree, reuse covers it
+                continue;
+            }
             // otherwise it's an out-of-tree dependency
             let package_id =
                 Package { name: package.name.to_string(), version: package.version.to_string() };

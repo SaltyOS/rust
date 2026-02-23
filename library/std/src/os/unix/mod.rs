@@ -85,6 +85,8 @@ mod platform {
     pub use crate::os::vita::*;
     #[cfg(target_os = "vxworks")]
     pub use crate::os::vxworks::*;
+    #[cfg(target_os = "saltyos")]
+    pub use crate::os::saltyos::*;
 }
 
 pub mod ffi;
