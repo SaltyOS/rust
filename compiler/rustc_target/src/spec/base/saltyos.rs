@@ -2,7 +2,10 @@ use crate::spec::{Cc, LinkerFlavor, Lld, Os, PanicStrategy, RelroLevel, TargetOp
 
 pub(crate) fn opts() -> TargetOptions {
     let pre_link_args = TargetOptions::link_args(
-        LinkerFlavor::Gnu(Cc::Yes, Lld::Yes),
+        // `link_args` seeds both GNU variants internally; pass the non-LLD
+        // flavor so rustc can mirror the args to the LLD twin without
+        // tripping the add_link_args_iter assertion.
+        LinkerFlavor::Gnu(Cc::Yes, Lld::No),
         &["-z", "max-page-size=4096"],
     );
 
