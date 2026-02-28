@@ -141,6 +141,7 @@ impl Condvar {
     target_os = "horizon",
     target_os = "l4re",
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "teeos",
 )))]
 impl Condvar {
@@ -196,6 +197,7 @@ impl Condvar {
     target_os = "horizon",
     target_os = "l4re",
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "teeos",
 ))]
 impl Condvar {

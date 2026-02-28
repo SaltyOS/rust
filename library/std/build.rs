@@ -54,6 +54,7 @@ fn main() {
         || target_os == "teeos"
         || target_os == "zkvm"
         || target_os == "rtems"
+        || target_os == "saltyos"
         || target_os == "nuttx"
         || target_os == "cygwin"
         || target_os == "vexos"

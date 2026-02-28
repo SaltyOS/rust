@@ -29,6 +29,7 @@ use libc::fstatat64;
     target_os = "illumos",
     target_os = "nto",
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "solaris",
     target_os = "vita",
     target_os = "wasi",
@@ -46,6 +47,7 @@ use libc::readdir as readdir64;
     target_os = "linux",
     target_os = "nto",
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "solaris",
     target_os = "vita",
     target_os = "wasi",
@@ -278,6 +280,7 @@ struct DirStream(*mut libc::DIR);
 cfg_select! {
     any(
         target_os = "redox",
+        target_os = "saltyos",
         target_os = "espidf",
         target_os = "horizon",
         target_os = "vita",
@@ -411,6 +414,7 @@ fn get_path_from_fd(fd: c_int) -> Option<PathBuf> {
     target_os = "linux",
     target_os = "nto",
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "solaris",
     target_os = "vita",
     target_os = "wasi",
@@ -437,6 +441,7 @@ pub struct DirEntry {
     target_os = "linux",
     target_os = "nto",
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "solaris",
     target_os = "vita",
     target_os = "wasi",
@@ -463,6 +468,7 @@ struct dirent64_min {
     target_os = "linux",
     target_os = "nto",
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "solaris",
     target_os = "vita",
     target_os = "wasi",
@@ -845,6 +851,7 @@ impl Iterator for ReadDir {
         target_os = "linux",
         target_os = "nto",
         target_os = "redox",
+        target_os = "saltyos",
         target_os = "solaris",
         target_os = "vita",
         target_os = "wasi",
@@ -943,6 +950,7 @@ impl Iterator for ReadDir {
         target_os = "linux",
         target_os = "nto",
         target_os = "redox",
+        target_os = "saltyos",
         target_os = "solaris",
         target_os = "vita",
         target_os = "wasi",
@@ -1004,6 +1012,7 @@ impl Drop for DirStream {
         #[cfg(not(any(
             miri,
             target_os = "redox",
+            target_os = "saltyos",
             target_os = "nto",
             target_os = "vita",
             target_os = "hurd",
@@ -1138,6 +1147,7 @@ impl DirEntry {
         target_os = "nto",
         target_os = "redox",
         target_os = "rtems",
+        target_os = "saltyos",
         target_os = "solaris",
         target_os = "vita",
         target_os = "vxworks",
@@ -1193,6 +1203,7 @@ impl DirEntry {
         target_os = "illumos",
         target_os = "fuchsia",
         target_os = "redox",
+        target_os = "saltyos",
         target_os = "aix",
         target_os = "nto",
         target_os = "vita",
@@ -1210,6 +1221,7 @@ impl DirEntry {
         target_os = "illumos",
         target_os = "fuchsia",
         target_os = "redox",
+        target_os = "saltyos",
         target_os = "aix",
         target_os = "nto",
         target_os = "vita",
@@ -1781,8 +1793,8 @@ impl File {
 
     pub fn set_times(&self, times: FileTimes) -> io::Result<()> {
         cfg_select! {
-            any(target_os = "redox", target_os = "espidf", target_os = "horizon", target_os = "nuttx") => {
-                // Redox doesn't appear to support `UTIME_OMIT`.
+            any(target_os = "redox", target_os = "saltyos", target_os = "espidf", target_os = "horizon", target_os = "nuttx") => {
+                // Redox/SaltyOS doesn't appear to support `UTIME_OMIT`.
                 // ESP-IDF and HorizonOS do not support `futimens` at all and the behavior for those OS is therefore
                 // the same as for Redox.
                 let _ = times;
@@ -1847,6 +1859,7 @@ impl File {
 
 #[cfg(not(any(
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "espidf",
     target_os = "horizon",
     target_os = "nuttx",
@@ -2122,12 +2135,13 @@ pub fn symlink(original: &CStr, link: &CStr) -> io::Result<()> {
 pub fn link(original: &CStr, link: &CStr) -> io::Result<()> {
     cfg_select! {
         any(
-            // VxWorks, Redox and ESP-IDF lack `linkat`, so use `link` instead.
+            // VxWorks, Redox, SaltyOS and ESP-IDF lack `linkat`, so use `link` instead.
             // POSIX leaves it implementation-defined whether `link` follows
             // symlinks, so rely on the `symlink_hard_link` test in
             // library/std/src/fs/tests.rs to check the behavior.
             target_os = "vxworks",
             target_os = "redox",
+            target_os = "saltyos",
             target_os = "espidf",
             // Android has `linkat` on newer versions, but we happen to know
             // `link` always has the correct behavior, so it's here as well.
@@ -2208,7 +2222,7 @@ fn open_from(from: &Path) -> io::Result<(crate::fs::File, crate::fs::Metadata)> 
 
 fn set_times_impl(p: &CStr, times: FileTimes, follow_symlinks: bool) -> io::Result<()> {
     cfg_select! {
-       any(target_os = "redox", target_os = "espidf", target_os = "horizon", target_os = "nuttx", target_os = "vita", target_os = "rtems") => {
+       any(target_os = "redox", target_os = "saltyos", target_os = "espidf", target_os = "horizon", target_os = "nuttx", target_os = "vita", target_os = "rtems") => {
             let _ = (p, times, follow_symlinks);
             Err(io::const_error!(
                 io::ErrorKind::Unsupported,
@@ -2494,9 +2508,10 @@ pub fn mkfifo(path: &Path, mode: u32) -> io::Result<()> {
 
 pub use remove_dir_impl::remove_dir_all;
 
-// Fallback for REDOX, ESP-ID, Horizon, Vita, Vxworks and Miri
+// Fallback for REDOX, SaltyOS, ESP-ID, Horizon, Vita, Vxworks and Miri
 #[cfg(any(
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "espidf",
     target_os = "horizon",
     target_os = "vita",
@@ -2511,6 +2526,7 @@ mod remove_dir_impl {
 // Modern implementation using openat(), unlinkat() and fdopendir()
 #[cfg(not(any(
     target_os = "redox",
+    target_os = "saltyos",
     target_os = "espidf",
     target_os = "horizon",
     target_os = "vita",
