@@ -169,6 +169,8 @@ pub mod openbsd;
 pub mod redox;
 #[cfg(target_os = "rtems")]
 pub mod rtems;
+#[cfg(target_os = "saltyos")]
+pub mod saltyos;
 #[cfg(target_os = "solaris")]
 pub mod solaris;
 #[cfg(target_os = "solid_asp3")]

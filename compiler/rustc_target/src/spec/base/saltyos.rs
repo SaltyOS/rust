@@ -1,4 +1,4 @@
-use crate::spec::{Cc, LinkerFlavor, Lld, Os, PanicStrategy, RelroLevel, TargetOptions};
+use crate::spec::{Cc, LinkerFlavor, Lld, Os, PanicStrategy, RelroLevel, TargetOptions, cvs};
 
 pub(crate) fn opts() -> TargetOptions {
     let pre_link_args = TargetOptions::link_args(
@@ -13,11 +13,13 @@ pub(crate) fn opts() -> TargetOptions {
         os: Os::SaltyOs,
         linker_flavor: LinkerFlavor::Gnu(Cc::Yes, Lld::Yes),
         linker: Some("clang".into()),
+        families: cvs!["unix"],
         dynamic_linking: true,
         position_independent_executables: true,
         relro_level: RelroLevel::Full,
         panic_strategy: PanicStrategy::Abort,
-        has_thread_local: false,
+        has_thread_local: true,
+        has_rpath: true,
         pre_link_args,
         ..Default::default()
     }
