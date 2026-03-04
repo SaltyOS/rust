@@ -32,6 +32,8 @@ pub type blksize_t = i64;
 pub type blkcnt_t = i64;
 #[stable(feature = "raw_ext", since = "1.1.0")]
 pub type off_t = i64;
+#[stable(feature = "pthread_t", since = "1.8.0")]
+pub type pthread_t = u64;
 
 #[repr(C)]
 #[derive(Clone)]

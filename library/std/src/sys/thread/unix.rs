@@ -6,6 +6,7 @@
     target_os = "hurd",
     target_os = "aix",
     target_os = "wasi",
+    target_os = "saltyos",
 )))]
 use crate::ffi::CStr;
 use crate::mem::{self, DropGuard, ManuallyDrop};
