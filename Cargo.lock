@@ -6948,4 +6948,5 @@ dependencies = [
 
 [[patch.unused]]
 name = "libc"
-version = "0.2.178"
+version = "1.0.0-alpha.3"
+source = "git+https://github.com/SaltyOS/rust-lang-libc?branch=main#496f876db0c735f86f3e2122a19051d5a3163f59"
